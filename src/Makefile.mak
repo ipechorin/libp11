@@ -8,12 +8,13 @@ LIBP11_OBJECTS = libpkcs11.obj p11_attr.obj p11_cert.obj \
 	p11_atfork.obj
 LIBP11_LIB = libp11.lib
 LIBP11_TARGET = libp11.dll
+LIBP11_STATIC_TARGET = libp11_a.lib
 
 PKCS11_OBJECTS = eng_front.obj eng_back.obj eng_parse.obj eng_err.obj
 PKCS11_TARGET = pkcs11.dll
 
 OBJECTS = $(LIBP11_OBJECTS) $(PKCS11_OBJECTS)
-TARGETS = $(LIBP11_TARGET) $(PKCS11_TARGET)
+TARGETS = $(LIBP11_TARGET) $(PKCS11_TARGET) $(LIBP11_STATIC_TARGET)
 
 all: $(TARGETS)
 
@@ -34,6 +35,9 @@ $(LIBP11_TARGET): $(LIBP11_OBJECTS) $*.def $*.res
 	link $(LINKFLAGS) /dll /def:$*.def /implib:$*.lib /out:$@ \
 		$(LIBP11_OBJECTS) $(LIBS) $*.res
 	if EXIST $*.dll.manifest mt -manifest $*.dll.manifest -outputresource:$*.dll;2
+
+$(LIBP11_STATIC_TARGET): $(LIBP11_OBJECTS)
+	lib /out:$@ $(LIBP11_OBJECTS)
 
 $(PKCS11_TARGET): $(PKCS11_OBJECTS) $(LIBP11_OBJECTS) $*.def $*.res
 	link $(LINKFLAGS) /dll /def:$*.def /implib:$*.lib /out:$@ \
