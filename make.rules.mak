@@ -23,6 +23,7 @@ OPENSSL_DIR = C:\OpenSSL-Win32
 OPENSSL_INC = /I"$(OPENSSL_DIR)\include"
 !ENDIF
 
+!IF "$(OPENSSL_LIB)" == ""
 !IF "$(OPENSSL_STATIC_DIR)" == ""
 OPENSSL_LIB = $(OPENSSL_DIR)\lib\libeay32.lib
 !IF EXIST($(OPENSSL_LIB))
@@ -38,6 +39,7 @@ OPENSSL_LIB = $(OPENSSL_DIR)\lib\VC\static\libeay32MT$(DEBUG_SUFFIX).lib
 !ELSE
 OPENSSL_LIB = $(OPENSSL_DIR)\lib\VC\static\libcryptoMT$(DEBUG_SUFFIX).lib
 !MESSAGE OpenSSL >= 1.1.x detected (static library)
+!ENDIF
 !ENDIF
 !ENDIF
 
